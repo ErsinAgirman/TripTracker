@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34701.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripTrackerCore", "TripTrackerCore\TripTrackerCore.csproj", "{CE476093-0831-4D34-86A2-974E0A7AE2E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripTrackerRepository", "TripTrackerRepository\TripTrackerRepository.csproj", "{4A39D040-13B5-4FC5-B21A-7F45777F0031}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripTrackerService", "TripTrackerService\TripTrackerService.csproj", "{0640DB3E-9F92-4421-953E-C5C5EF08A59D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripTrackerAPI", "TripTrackerAPI\TripTrackerAPI.csproj", "{AFA061E4-7B37-4FD2-8742-4BB109848177}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripTrackerWeb", "TripTrackerWeb\TripTrackerWeb.csproj", "{3A61699C-7B35-423D-A472-B08BCFD99ACD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripTrackerCaching", "TripTrackerCaching\TripTrackerCaching.csproj", "{BD7F50B9-D3A8-4437-83C7-767330057B86}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CE476093-0831-4D34-86A2-974E0A7AE2E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE476093-0831-4D34-86A2-974E0A7AE2E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE476093-0831-4D34-86A2-974E0A7AE2E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE476093-0831-4D34-86A2-974E0A7AE2E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A39D040-13B5-4FC5-B21A-7F45777F0031}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A39D040-13B5-4FC5-B21A-7F45777F0031}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A39D040-13B5-4FC5-B21A-7F45777F0031}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A39D040-13B5-4FC5-B21A-7F45777F0031}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0640DB3E-9F92-4421-953E-C5C5EF08A59D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0640DB3E-9F92-4421-953E-C5C5EF08A59D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0640DB3E-9F92-4421-953E-C5C5EF08A59D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0640DB3E-9F92-4421-953E-C5C5EF08A59D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFA061E4-7B37-4FD2-8742-4BB109848177}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFA061E4-7B37-4FD2-8742-4BB109848177}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFA061E4-7B37-4FD2-8742-4BB109848177}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFA061E4-7B37-4FD2-8742-4BB109848177}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A61699C-7B35-423D-A472-B08BCFD99ACD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A61699C-7B35-423D-A472-B08BCFD99ACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A61699C-7B35-423D-A472-B08BCFD99ACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A61699C-7B35-423D-A472-B08BCFD99ACD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD7F50B9-D3A8-4437-83C7-767330057B86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD7F50B9-D3A8-4437-83C7-767330057B86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD7F50B9-D3A8-4437-83C7-767330057B86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD7F50B9-D3A8-4437-83C7-767330057B86}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A75CCD30-2810-4A61-80F3-7E05D400A5D8}
+	EndGlobalSection
+EndGlobal
