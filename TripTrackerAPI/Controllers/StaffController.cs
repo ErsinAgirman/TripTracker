@@ -45,8 +45,8 @@ namespace TripTrackerAPI.Controllers
 		{
 			var staff = await _service.AddAsync(_mapper.Map<Staff>(staffDto));
 
-			var StaffsDto = _mapper.Map<AdminDto>(staff);
-			return CreateActionResult(CustomResponseDto<AdminDto>.Success(201, StaffsDto));
+			var StaffsDto = _mapper.Map<StaffDto>(staff);
+			return CreateActionResult(CustomResponseDto<StaffDto>.Success(201, StaffsDto));
 		}
 
 		[HttpPut]
