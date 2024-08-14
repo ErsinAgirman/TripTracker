@@ -20,6 +20,8 @@ namespace TripTrackerService.Mapping
 
             CreateMap<AdminUpdateDto, Admin>(); //düzenleme için
 
+            CreateMap<Travel, TravelWithStaffDto>();
+
             //buraya bakılacak, ekleme yapılabilir (Update,Delete vs bağlı olarak)
         }
     }

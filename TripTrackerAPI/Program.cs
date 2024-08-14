@@ -25,6 +25,9 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
 builder.Services.AddAutoMapper(typeof(MapProfile));
 
+builder.Services.AddScoped<ITravelRepository, TravelRepository>();  //
+builder.Services.AddScoped<ITravelService, TravelService>();       //
+
 builder.Services.AddDbContext<AppDbContext>(x =>
 {
 	x.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"), options =>

@@ -62,7 +62,7 @@ namespace TripTrackerAPI.Controllers
 
 			if(admin == null)
 			{
-				return CreateActionResult(CustomResponseDto<AdminDto>.Fail(404,"Bu Id ye sahip Admin Yok!"));
+				return CreateActionResult(CustomResponseDto<AdminDto>.Fail(404,"Bu Id ye sahip Yönetici Yok!"));
 			}
 			
 			await _service.RemoveAsync(admin);

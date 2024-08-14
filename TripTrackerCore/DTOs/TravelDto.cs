@@ -16,8 +16,8 @@ namespace TripTrackerCore.DTOs
 		public string? Stay { get; set; }
 		public string Vehicle { get; set; }
 
-		//public int StaffId { get; set; }
-		//public int StatusId { get; set; }
-		//public int AdminId { get; set; }
+		public int StaffId { get; set; }
+		public int StatusId { get; set; }
+		public int AdminId { get; set; }
 	}
 }
