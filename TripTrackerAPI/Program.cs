@@ -1,7 +1,9 @@
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Reflection;
+using TripTrackerAPI.Filters;
 using TripTrackerCore.Repositories;
 using TripTrackerCore.Services;
 using TripTrackerCore.UnitOfWorks;
@@ -17,8 +19,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers()
+builder.Services.AddControllers(options=> { options.Filters.Add(new ValidateFilterAttribute());  })
 	.AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<AdminDtoValidator>()); //??
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+	options.SuppressModelStateInvalidFilter = true;
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
