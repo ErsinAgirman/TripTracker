@@ -6,7 +6,8 @@ namespace TripTrackerAPI.Filters
 {
 	public class ValidateFilterAttribute : ActionFilterAttribute
 	{
-
+		//Controller içerisindeki metotlara gelen request e müdahale etmek için kullanılır
+		//Rquest gelmeden önce, geldikten sonra,action method çalışmadan önce,sonra.. erişmemizi sağlar.
 		public override void OnActionExecuting(ActionExecutingContext context)
 		{
             if (!context.ModelState.IsValid)

@@ -61,10 +61,10 @@ namespace TripTrackerAPI.Controllers
 		{
 			var staff = await _service.GetByIdAsync(id);
 
-            if (staff == null)
-            {
-				return CreateActionResult(CustomResponseDto<AdminDto>.Fail(404, "Bu Id ye sahip Personel Yok!"));
-            }
+    //        if (staff == null)
+    //        {
+				//return CreateActionResult(CustomResponseDto<AdminDto>.Fail(404, "Bu Id ye sahip Personel Yok!"));
+    //        }
 
 			await _service.RemoveAsync(staff);
 			return CreateActionResult(CustomResponseDto<AdminDto>.Success(204));

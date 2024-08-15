@@ -56,10 +56,10 @@ namespace TripTrackerAPI.Controllers
 		public async Task<IActionResult> Remove(int id)
 		{
 			var status = await _service.GetByIdAsync(id);
-            if (status == null)
-            {
-				return CreateActionResult(CustomResponseDto<StatusDto>.Success(204));
-            }
+    //        if (status == null)
+    //        {
+				//return CreateActionResult(CustomResponseDto<StatusDto>.Success(204));
+    //        }
 			await _service.RemoveAsync(status);
 			return CreateActionResult(CustomResponseDto<StatusDto>.Success(204));
 		}

@@ -68,10 +68,10 @@ namespace TripTrackerAPI.Controllers
 		{
 			var travel = await _service.GetByIdAsync(id);
 
-            if (travel == null)
-            {
-				return CreateActionResult(CustomResponseDto<TravelDto>.Fail(404, "Bu Id ye sahip bir Seyahat Yok!"));
-            }
+    //        if (travel == null)
+    //        {
+				//return CreateActionResult(CustomResponseDto<TravelDto>.Fail(404, "Bu Id ye sahip bir Seyahat Yok!"));
+    //        }
 
 			await _service.RemoveAsync(travel);
 			return CreateActionResult(CustomResponseDto<TravelDto>.Success(204));

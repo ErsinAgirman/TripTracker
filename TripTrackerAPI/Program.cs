@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 using TripTrackerAPI.Filters;
+using TripTrackerAPI.Middlewares;
 using TripTrackerCore.Repositories;
 using TripTrackerCore.Services;
 using TripTrackerCore.UnitOfWorks;
@@ -56,7 +57,9 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseHttpsRedirection(); //middleware's
+
+app.UseCustomException();
 
 app.UseAuthorization();
 

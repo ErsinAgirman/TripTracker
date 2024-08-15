@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TripTrackerCore.Repositories;
 using TripTrackerCore.Services;
 using TripTrackerCore.UnitOfWorks;
+using TripTrackerService.Exceptions;
 
 namespace TripTrackerService.Services
 {
@@ -49,7 +50,13 @@ namespace TripTrackerService.Services
 
 		public async Task<T> GetByIdAsync(int id)
 		{
-			return await _repository.GetByIdAsync(id);
+			var hasItem = await _repository.GetByIdAsync(id);
+
+			if (hasItem == null) 
+			{
+				throw new ClientSideException($"{typeof(T).Name} not found");
+			}
+			return hasItem;
 		}
 
 		public async Task RemoveAsync(T entity)
