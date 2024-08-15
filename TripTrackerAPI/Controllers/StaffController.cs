@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TripTrackerAPI.Filters;
 using TripTrackerCore.DTOs;
 using TripTrackerCore.Models;
 using TripTrackerCore.Services;
@@ -30,6 +31,9 @@ namespace TripTrackerAPI.Controllers
 			return CreateActionResult<List<StaffDto>>(CustomResponseDto<List<StaffDto>>.Success(200,StaffsDto));
 		}
 
+
+		[ServiceFilter(typeof(NotFoundFilter<Staff>))]
+
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetById(int id)
 		{
@@ -55,6 +59,8 @@ namespace TripTrackerAPI.Controllers
 			await _service.UpdateAsync(_mapper.Map<Staff>(staffDto));
 			return CreateActionResult(CustomResponseDto<NoContentDto>.Success(204));	
 		}
+
+		[ServiceFilter(typeof(NotFoundFilter<Staff>))]
 
 		[HttpDelete]
 		public async Task<IActionResult> Remove(int id)
