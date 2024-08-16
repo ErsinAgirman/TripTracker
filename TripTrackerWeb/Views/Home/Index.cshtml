@@ -5,4 +5,126 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <h2>Hello World</h2>
+
+    <div id="result"></div> <!-- API'den gelen veriyi göstermek için bu div kullanılır -->
+   @*   <button id="getDataButton" class="btn btn-primary">Get Data</button> <!-- Veriyi almak için buton --> *@
+    <button id="getTravelButton" class="btn btn-primary">Get Travel Data</button>
+    <button id="getStaffButton" class="btn btn-primary">Get Staff Data</button>
+    <button id="getStatusButton" class="btn btn-primary">Get Status Data</button>
+    <button id="getAdminsButton" class="btn btn-primary">Get Admin Data</button>
+    
+    <!-- Veri Gösterim Alanları -->
+    <div id="adminResult"></div>
+    <div id="travelResult"></div>
+    <div id="staffResult"></div>
+    <div id="statusResult"></div>
+
 </div>
+
+    <h2>Admin List</h2>
+<!-- API'den gelen veriyi tablo olarak göstermek için bu tablo yapısı kullanılır -->
+<table id="resultTable" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Created Date</th>
+            <th>Active</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- API'den gelen veriler bu alan içine eklenecek -->
+    </tbody>
+</table>
+<button id="getDataButton" class="btn btn-primary">Get Data</button> <!-- Veriyi almak için buton -->
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Admin verisini çekme ve gösterme
+        $("#getAdminButton").click(function () {
+            $.ajax({
+                url: "https://localhost:7294/api/Admin",
+                method: "GET",
+                success: function (data) {
+                    var adminTable = "<table class='table table-bordered'><thead><tr><th>ID</th><th>Name</th><th>Surname</th></tr></thead><tbody>";
+                    $.each(data.data, function (index, item) {
+                        adminTable += "<tr><td>" + item.id + "</td><td>" + item.name + "</td><td>" + item.surname + "</td></tr>";
+                    });
+                    adminTable += "</tbody></table>";
+                    $("#adminResult").html(adminTable);
+                },
+                error: function (err) {
+                    console.log(err);
+                    $("#adminResult").html("An error occurred: " + err.statusText);
+                }
+            });
+        });
+
+        // Travel verisini çekme ve gösterme
+        $("#getTravelButton").click(function () {
+            $.ajax({
+                url: "https://localhost:7294/api/Travel",
+                method: "GET",
+                success: function (data) {
+                    var travelTable = "<table class='table table-bordered'><thead><tr><th>ID</th><th>City</th><th>Description</th><th>Stay</th></tr></thead><tbody>";
+                    $.each(data.data, function (index, item) {
+                        travelTable += "<tr><td>" + item.id + "</td><td>" + item.city + "</td><td>" + item.description + "</td><td>" + item.stay + "</td></tr>";
+                    });
+                    travelTable += "</tbody></table>";
+                    $("#travelResult").html(travelTable);
+                },
+                error: function (err) {
+                    console.log(err);
+                    $("#travelResult").html("An error occurred: " + err.statusText);
+                }
+            });
+        });
+
+        // Staff verisini çekme ve gösterme
+        $("#getStaffButton").click(function () {
+            $.ajax({
+                url: "https://localhost:7294/api/Staff",
+                method: "GET",
+                success: function (data) {
+                    var staffTable = "<table class='table table-bordered'><thead><tr><th>ID</th><th>Name</th><th>Surname</th></tr></thead><tbody>";
+                    $.each(data.data, function (index, item) {
+                        staffTable += "<tr><td>" + item.id + "</td><td>" + item.name + "</td><td>" + item.surname + "</td></tr>";
+                    });
+                    staffTable += "</tbody></table>";
+                    $("#staffResult").html(staffTable);
+                },
+                error: function (err) {
+                    console.log(err);
+                    $("#staffResult").html("An error occurred: " + err.statusText);
+                }
+            });
+        });
+
+        // Status verisini çekme ve gösterme
+        $("#getStatusButton").click(function () {
+            $.ajax({
+                url: "https://localhost:7294/api/Status",
+                method: "GET",
+                success: function (data) {
+                    var statusTable = "<table class='table table-bordered'><thead><tr><th>ID</th><th>Status</th></tr></thead><tbody>";
+                    $.each(data.data, function (index, item) {
+                        statusTable += "<tr><td>" + item.id + "</td><td>" + item.Information + "</td></tr>";
+                    });
+                    statusTable += "</tbody></table>";
+                    $("#statusResult").html(statusTable);
+                },
+                error: function (err) {
+                    console.log(err);
+                    $("#statusResult").html("An error occurred: " + err.statusText);
+                }
+            });
+        });
+    });
+
+</script>
