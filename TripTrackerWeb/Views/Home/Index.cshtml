@@ -9,17 +9,19 @@
     <h2>Hello World</h2>
 
     <div id="result"></div> <!-- API'den gelen veriyi göstermek için bu div kullanılır -->
-   @*   <button id="getDataButton" class="btn btn-primary">Get Data</button> <!-- Veriyi almak için buton --> *@
+   @*   <button id="getDataButton" class="btn btn-primary">Get Data</button>  *@
     <button id="getTravelButton" class="btn btn-primary">Get Travel Data</button>
     <button id="getStaffButton" class="btn btn-primary">Get Staff Data</button>
     <button id="getStatusButton" class="btn btn-primary">Get Status Data</button>
     <button id="getAdminsButton" class="btn btn-primary">Get Admin Data</button>
+    <button id="getTWSButton" class="btn btn-primary">Get TWS Data</button>
     
     <!-- Veri Gösterim Alanları -->
     <div id="adminResult"></div>
     <div id="travelResult"></div>
     <div id="staffResult"></div>
     <div id="statusResult"></div>
+    <div id="travelWithStaffResult"></div>
 
 </div>
 
@@ -47,7 +49,7 @@
 <script>
     $(document).ready(function () {
         // Admin verisini çekme ve gösterme
-        $("#getAdminButton").click(function () {
+        $("#getAdminsButton").click(function () {
             $.ajax({
                 url: "https://localhost:7294/api/Admin",
                 method: "GET",
@@ -74,7 +76,14 @@
                 success: function (data) {
                     var travelTable = "<table class='table table-bordered'><thead><tr><th>ID</th><th>City</th><th>Description</th><th>Stay</th></tr></thead><tbody>";
                     $.each(data.data, function (index, item) {
-                        travelTable += "<tr><td>" + item.id + "</td><td>" + item.city + "</td><td>" + item.description + "</td><td>" + item.stay + "</td></tr>";
+                        travelTable += "<tr><td>" + item.id 
+                        + "</td><td>" 
+                        + item.city 
+                        + "</td><td>" 
+                        + item.description 
+                        + "</td><td>" 
+                        + item.stay 
+                        + "</td></tr>";
                     });
                     travelTable += "</tbody></table>";
                     $("#travelResult").html(travelTable);
@@ -114,7 +123,7 @@
                 success: function (data) {
                     var statusTable = "<table class='table table-bordered'><thead><tr><th>ID</th><th>Status</th></tr></thead><tbody>";
                     $.each(data.data, function (index, item) {
-                        statusTable += "<tr><td>" + item.id + "</td><td>" + item.Information + "</td></tr>";
+                        statusTable += "<tr><td>" + item.id + "</td><td>" + item.information + "</td></tr>";
                     });
                     statusTable += "</tbody></table>";
                     $("#statusResult").html(statusTable);
@@ -126,5 +135,46 @@
             });
         });
     });
+
+
+    $(document).ready(function () {
+        // TWS verisini çekme ve gösterme
+        $("#getTWSButton").click(function () {
+            $.ajax({
+                url: "https://localhost:7294/api/Travel/GetTravelWithStaff",
+                method: "GET",
+                success: function (data) {
+                    var twsTable = "<table class='table table-bordered'><thead><tr><th>Travel ID</th><th>City</th><th>Description</th><th>Stay</th><th>Vehicle</th><th>Staff Name</th><th>Staff Surname</th><th>Admin Name</th><th>Admin Surname</th></tr></thead><tbody>";
+                    var requests = [];
+
+                    $.each(data.data, function (index, item) {
+                        var request = $.ajax({
+                            url: "https://localhost:7294/api/Admin/" + item.adminId,
+                            method: "GET",
+                            success: function (adminData) {
+                                twsTable += "<tr><td>" + item.id + "</td><td>" + item.city + "</td><td>" + item.description + "</td><td>" + item.stay + "</td><td>" + item.vehicle + "</td><td>" + item.staff.name + "</td><td>" + item.staff.surname + "</td><td>" + adminData.data.name + "</td><td>" + adminData.data.surname + "</td></tr>";
+                            },
+                            error: function (err) {
+                                console.log(err);
+                                $("#travelWithStaffResult").html("An error occurred while fetching admin data: " + err.statusText);
+                            }
+                        });
+                        requests.push(request);
+                    });
+
+                    $.when.apply($, requests).then(function () {
+                        twsTable += "</tbody></table>";
+                        $("#travelWithStaffResult").html(twsTable);
+                    });
+                },
+                error: function (err) {
+                    console.log(err);
+                    $("#travelWithStaffResult").html("An error occurred: " + err.statusText);
+                }
+            });
+        });
+    });
+
+
 
 </script>

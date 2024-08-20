@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using TripTrackerCore.Models;
 using TripTrackerCore.Repositories;
 using TripTrackerCore.Services;
 using TripTrackerCore.UnitOfWorks;
@@ -26,7 +27,7 @@ namespace TripTrackerService.Services
 
 		public async Task<T> AddAsync(T entity)
 		{
-			await _repository.AddAsync(entity);
+            await _repository.AddAsync(entity);
 			await _unitOfWork.CommitAsync();
 			return entity;
 		}

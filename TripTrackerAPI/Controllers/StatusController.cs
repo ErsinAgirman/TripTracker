@@ -43,7 +43,7 @@ namespace TripTrackerAPI.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Save(StatusDto statusDto)
 		{
-			var status = await _service.AddAsync(_mapper.Map<Status>(statusDto));
+            var status = await _service.AddAsync(_mapper.Map<Status>(statusDto));
 			var StatusDto = _mapper.Map<StatusDto>(status);
 			return CreateActionResult(CustomResponseDto<StatusDto>.Success(201, StatusDto));
 		}

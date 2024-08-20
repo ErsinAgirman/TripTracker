@@ -1,0 +1,34 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Travel Index";
+}
+
+<h2>Staff Index</h2>
+
+<div id="staffResult"></div>
+
+@section Scripts {
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+    <script>
+        // Staff verisini çekme ve gösterme
+            $.ajax({
+                url: "https://localhost:7294/api/Staff",
+                method: "GET",
+                success: function (data) {
+                    var staffTable = "<table class='table table-bordered'><thead><tr><th>ID</th><th>Name</th><th>Surname</th></tr></thead><tbody>";
+                    $.each(data.data, function (index, item) {
+                        staffTable += "<tr><td>" + item.id + "</td><td>" + item.name + "</td><td>" + item.surname + "</td></tr>";
+                    });
+                    staffTable += "</tbody></table>";
+                    $("#staffResult").html(staffTable);
+                },
+                error: function (err) {
+                    console.log(err);
+                    $("#staffResult").html("An error occurred: " + err.statusText);
+                }
+            });
+        
+    </script>
+}

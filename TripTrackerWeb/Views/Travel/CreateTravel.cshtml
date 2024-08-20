@@ -1,0 +1,81 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<form id="travelForm">
+    <div class="form-group col-lg-4">
+        <label for="inputCity">City</label>
+        <input type="text" class="form-control" id="inputCity" placeholder="Enter City">
+    </div>
+    <div class="form-group col-lg-4">
+        <label for="inputDescription">Description</label>
+        <input type="text" class="form-control" id="inputDescription" placeholder="Enter Description">
+    </div>
+    <div class="form-group col-lg-4">
+        <label for="inputStay">Stay</label>
+        <input type="text" class="form-control" id="inputStay" placeholder="Enter Stay">
+    </div>
+    <div class="form-group col-lg-4">
+        <label for="inputStartDate">Start Date</label>
+        <input type="date" class="form-control" id="inputStartDate">
+    </div>
+    <div class="form-group col-lg-4">
+        <label for="inputEndDate">End Date</label>
+        <input type="date" class="form-control" id="inputEndDate">
+    </div>
+    <div class="form-group col-lg-4">
+        <label for="inputVehicle">Vehicle</label>
+        <input type="text" class="form-control" id="inputVehicle" placeholder="Enter Vehicle">
+    </div>
+    <div class="form-group col-lg-4">
+        <label for="inputStaffId">Staff ID</label>
+        <input type="number" class="form-control" id="inputStaffId" placeholder="Enter Staff ID">
+    </div>
+    <div class="form-group col-lg-4">
+        <label for="inputStatusId">Status ID</label>
+        <input type="number" class="form-control" id="inputStatusId" placeholder="Enter Status ID">
+    </div>
+    <div class="form-group col-lg-4">
+        <label for="inputAdminId">Admin ID</label>
+        <input type="number" class="form-control" id="inputAdminId" placeholder="Enter Admin ID">
+    </div>
+    <button type="submit" id="submitTravelButton" class="btn btn-primary">Submit Travel</button>
+</form>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $("#submitTravelButton").click(function (event) {
+        event.preventDefault();
+
+        var travelData = {
+            City: $("#inputCity").val(),
+            Description: $("#inputDescription").val(),
+            Stay: $("#inputStay").val(),
+            StartDate: $("#inputStartDate").val(),
+            EndDate: $("#inputEndDate").val(),
+            Vehicle: $("#inputVehicle").val(),
+            StaffId: $("#inputStaffId").val(),
+            StatusId: $("#inputStatusId").val(),
+            AdminId: $("#inputAdminId").val(),
+        };
+
+        $.ajax({
+            url: "https://localhost:7294/api/Travel",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(travelData),
+            success: function (response) {
+                alert("Travel data successfully submitted!");
+                console.log(response);
+            },
+            error: function (err) {
+                console.log(err);
+                alert("An error occurred: " + err.statusText);
+            }
+        });
+    });
+
+</script>

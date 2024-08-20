@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\Ready-Bootstrap-Dashboard-master\.DS_Store" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TripTrackerService\TripTrackerService.csproj" />
   </ItemGroup>
 

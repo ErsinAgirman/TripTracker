@@ -20,7 +20,7 @@ namespace TripTrackerCore.Models
         public Staff Staff { get; set; }
 
         //Durum ile ilişki
-        public int StatusId { get; set; }
+        public int StatusId { get; set; } /*= 3;*/
         public Status Status { get; set; }
 
         //Admin ile İlişki

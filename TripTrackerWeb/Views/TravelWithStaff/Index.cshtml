@@ -1,0 +1,82 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h2>TravelWithStaff Index</h2>
+
+@* <button id="getTWSButton" class="btn btn-primary">Get Travel with Staff</button> *@
+<div id="travelWithStaffResult"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // $("#getTWSButton").click(function () {
+            $.ajax({
+                url: "https://localhost:7294/api/Travel/GetTravelWithStaff",
+                method: "GET",
+                success: function (data) {
+                    var twsTable = `
+                            <table class='table table-bordered'>
+                                <thead>
+                                    <tr>
+                                        <th>Travel ID</th>
+                                        <th>City</th>
+                                        <th>Description</th>
+                                        <th>Stay</th>
+                                        <th>Vehicle</th>
+                                        <th>Staff Name</th>
+                                        <th>Staff Surname</th>
+                                        <th>Admin Name</th>
+                                        <th>Admin Surname</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                        `;
+
+                    var requests = [];
+
+                    $.each(data.data, function (index, item) {
+                        var request = $.ajax({
+                            url: "https://localhost:7294/api/Admin/" + item.adminId,
+                            method: "GET",
+                            success: function (adminData) {
+                                twsTable += `
+                                        <tr>
+                                            <td>${item.id}</td>
+                                            <td>${item.city}</td>
+                                            <td>${item.description}</td>
+                                            <td>${item.stay}</td>
+                                            <td>${item.vehicle}</td>
+                                            <td>${item.staff.name}</td>
+                                            <td>${item.staff.surname}</td>
+                                            <td>${adminData.data.name}</td>
+                                            <td>${adminData.data.surname}</td>
+                                        </tr>
+                                    `;
+                            },
+                            error: function (err) {
+                                console.log(err);
+                                $("#travelWithStaffResult").html("An error occurred while fetching admin data: " + err.statusText);
+                            }
+                        });
+                        requests.push(request);
+                    });
+
+                    $.when.apply($, requests).then(function () {
+                        twsTable += `
+                                </tbody>
+                            </table>
+                            `;
+                        $("#travelWithStaffResult").html(twsTable);
+                    });
+                },
+                error: function (err) {
+                    console.log(err);
+                    $("#travelWithStaffResult").html("An error occurred: " + err.statusText);
+                }
+            });
+        });
+    // });
+</script>

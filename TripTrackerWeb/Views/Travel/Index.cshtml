@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Travel Index";
+}
+
+<h2>Travel Index</h2>
+
+<button id="getTravelButton" class="btn btn-primary">Get Travel Data</button>
+<div id="travelResult"></div>
+
+@section Scripts {
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+    <script>
+        $("#getTravelButton").click(function () {
+            $.ajax({
+                url: "https://localhost:7294/api/Travel",
+                method: "GET",
+                success: function (data) {
+                    var travelTable = "<table class='table table-bordered'><thead><tr><th>ID</th><th>City</th><th>Description</th><th>Stay</th></tr></thead><tbody>";
+                    $.each(data.data, function (index, item) {
+                        travelTable 
+                            += "<tr><td>" 
+                            + item.id
+                            + "</td><td>"
+                            + item.city
+                            + "</td><td>"
+                            + item.description
+                            + "</td><td>"
+                            + item.stay
+                            + "</td></tr>";
+                    });
+                    travelTable += "</tbody></table>";
+                    $("#travelResult").html(travelTable);
+                },
+                error: function (err) {
+                    console.log(err);
+                    $("#travelResult").html("An error occurred: " + err.statusText);
+                }
+            });
+        });
+    </script>
+}

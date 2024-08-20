@@ -1,0 +1,54 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h2>Admin Index</h2>
+
+@* <button id="getAdminsButton" class="btn btn-primary">Get Admins</button> *@
+<div id="adminResult"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Admin verisini çekme ve gösterme
+        // $("#getAdminsButton").click(function () {
+            $.ajax({
+                url: "https://localhost:7294/api/Admin",
+                method: "GET",
+                success: function (data) {
+                    var adminTable = `
+                            <table class='table table-bordered'>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Surname</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                        `;
+                    $.each(data.data, function (index, item) {
+                        adminTable += `
+                                <tr>
+                                    <td>${item.id}</td>
+                                    <td>${item.name}</td>
+                                    <td>${item.surname}</td>
+                                </tr>
+                            `;
+                    });
+                    adminTable += `
+                                </tbody>
+                            </table>
+                        `;
+                    $("#adminResult").html(adminTable);
+                },
+                error: function (err) {
+                    console.log(err);
+                    $("#adminResult").html("An error occurred: " + err.statusText);
+                }
+            });
+        });
+    // });
+</script>

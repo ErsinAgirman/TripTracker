@@ -1,0 +1,47 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<form id="staffForm">
+    <div class="form-group col-lg-4">
+        <label for="inputName">Name</label>
+        <input type="text" class="form-control" id="inputName" placeholder="Enter Name">
+    </div>
+    <div class="form-group col-lg-4">
+        <label for="inputSurname">Surname</label>
+        <input type="text" class="form-control" id="inputSurname" placeholder="Enter Surname">
+    </div>
+    <button type="submit" id="submitStaffButton" class="btn btn-primary">Submit Staff</button>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $("#submitStaffButton").click(function (event) {
+        event.preventDefault();
+
+        var staffData = {
+            Name: $("#inputName").val(),
+            Surname: $("#inputSurname").val(),
+            // Position: $("#inputPosition").val(),
+            // Email: $("#inputEmail").val(),
+            // PhoneNumber: $("#inputPhoneNumber").val()
+        };
+
+        $.ajax({
+            url: "https://localhost:7294/api/Staff",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(staffData),
+            success: function (response) {
+                alert("Staff data successfully submitted!");
+                console.log(response);
+            },
+            error: function (err) {
+                console.log(err);
+                alert("An error occurred: " + err.statusText);
+            }
+        });
+    });
+</script>

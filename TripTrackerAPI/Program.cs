@@ -3,7 +3,6 @@ using Autofac.Extensions.DependencyInjection;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using System.Reflection;
 using TripTrackerAPI.Filters;
 using TripTrackerAPI.Middlewares;
@@ -18,21 +17,16 @@ using TripTrackerService.Mapping;
 using TripTrackerService.Services;
 using TripTrackerService.Validations;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddControllers(options=> { options.Filters.Add(new ValidateFilterAttribute());  })
-	.AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<AdminDtoValidator>()); //??
-
-builder.Services.Configure<ApiBehaviorOptions>(options =>
+builder.Services.AddControllers(options =>
 {
-	options.SuppressModelStateInvalidFilter = true;
-});
+    options.Filters.Add(new ValidateFilterAttribute());
+})
+.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<AdminDtoValidator>());
 
-// Add services to the container.
-builder.Services.AddControllers();
+// Configure CORS policy
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
@@ -41,68 +35,45 @@ builder.Services.AddCors(options =>
                           .AllowAnyMethod());
 });
 
-
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Add Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
+// Dependency Injection
 builder.Services.AddScoped(typeof(NotFoundFilter<>));
 builder.Services.AddAutoMapper(typeof(MapProfile));
 
-//builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-//builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-//builder.Services.AddScoped(typeof(IService<>), typeof(Service<>));
-
-//builder.Services.AddScoped<ITravelRepository, TravelRepository>();  //
-//builder.Services.AddScoped<ITravelService, TravelService>();       //
-
-builder.Services.AddDbContext<AppDbContext>(x =>
+// Add DbContext
+builder.Services.AddDbContext<AppDbContext>(options =>
 {
-	x.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"), options =>
-	{
-		options.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name);
-	});
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"), sqlOptions =>
+    {
+        sqlOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name);
+    });
 });
 
-
-
-builder.Host.UseServiceProviderFactory
-	(new AutofacServiceProviderFactory()); 
-
-builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder => containerBuilder.RegisterModule(new RepoServiceModule()));	
-		
-
+// Configure Autofac
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+{
+    containerBuilder.RegisterModule(new RepoServiceModule());
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
-
-
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-	app.UseSwagger();
-	app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection(); //middleware's
-
+app.UseHttpsRedirection();
 app.UseRouting();
-
 app.UseCors("AllowSpecificOrigin");
-
-app.UseCustomException();
-
 app.UseAuthorization();
-
+app.UseCustomException();
 app.MapControllers();
 
 app.Run();
