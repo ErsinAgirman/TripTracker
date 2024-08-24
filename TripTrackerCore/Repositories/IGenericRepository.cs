@@ -11,7 +11,8 @@ namespace TripTrackerCore.Repositories
 	{
 		Task<T> GetByIdAsync(int id);
 		IQueryable<T> GetAll();
-		IQueryable<T> Where(Expression<Func<T, bool>> expression);
+        //IQueryable<T> GetAdminsAll(); // yapılabilir. herhangi bir service fonksiyonu eklendiği zaman burda adını geçirmek gerekiyor.
+        IQueryable<T> Where(Expression<Func<T, bool>> expression);
 		Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
 		Task AddAsync(T entity);
 

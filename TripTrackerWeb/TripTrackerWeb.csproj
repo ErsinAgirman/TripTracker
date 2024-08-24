@@ -11,6 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.39" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.32" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TripTrackerService\TripTrackerService.csproj" />
   </ItemGroup>
 

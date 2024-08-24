@@ -25,7 +25,8 @@ namespace TripTrackerCore.Models
 
         //Admin ile İlişki
         public int AdminId { get; set; }
-        public Admin Admin { get; set; }
+        public Staff Admin { get; set; }
+        
 
     }
 }

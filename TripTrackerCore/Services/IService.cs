@@ -11,6 +11,7 @@ namespace TripTrackerCore.Services
 	{
 		Task<T> GetByIdAsync(int id);
 		Task<IEnumerable<T>> GetAllAsync();
+		Task<IEnumerable<T>> GetAllAdminsAsync(); //not
 		IQueryable<T> Where(Expression<Func<T, bool>> expression);
 		Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
 		Task<T> AddAsync(T entity);

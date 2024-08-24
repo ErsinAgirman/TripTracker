@@ -31,7 +31,6 @@ namespace TripTrackerAPI.Middlewares
 					await context.Response.WriteAsync(JsonSerializer.Serialize(response));
 
 				});
-
 			});
 		}
     }

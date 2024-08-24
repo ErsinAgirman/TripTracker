@@ -13,12 +13,12 @@ namespace TripTrackerService.Mapping
 	{
         public MapProfile()
         {
-            CreateMap<Admin, AdminDto>().ReverseMap();
+            CreateMap<Staff, AdminDto>().ReverseMap();
             CreateMap<Staff, StaffDto>().ReverseMap();
             CreateMap<Status, StatusDto>().ReverseMap();
             CreateMap<Travel, TravelDto>().ReverseMap();
 
-            CreateMap<AdminUpdateDto, Admin>(); //düzenleme için
+            CreateMap<AdminDto, Staff>(); //düzenleme için
 
             CreateMap<Travel, TravelWithStaffDto>();
 

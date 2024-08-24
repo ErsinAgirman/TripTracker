@@ -32,7 +32,7 @@ namespace TripTrackerAPI.Controllers
 		}
 
 
-		[ServiceFilter(typeof(NotFoundFilter<Staff>))]
+		//[ServiceFilter(typeof(NotFoundFilter<Staff>))]
 
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetById(int id)
@@ -60,7 +60,7 @@ namespace TripTrackerAPI.Controllers
 			return CreateActionResult(CustomResponseDto<NoContentDto>.Success(204));	
 		}
 
-		[ServiceFilter(typeof(NotFoundFilter<Staff>))]
+		//[ServiceFilter(typeof(NotFoundFilter<Staff>))]
 
 		[HttpDelete]
 		public async Task<IActionResult> Remove(int id)
@@ -73,7 +73,7 @@ namespace TripTrackerAPI.Controllers
     //        }
 
 			await _service.RemoveAsync(staff);
-			return CreateActionResult(CustomResponseDto<AdminDto>.Success(204));
+			return CreateActionResult(CustomResponseDto<StaffDto>.Success(204));
         }
 
 	}

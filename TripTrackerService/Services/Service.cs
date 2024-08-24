@@ -83,6 +83,26 @@ namespace TripTrackerService.Services
 			await _unitOfWork.CommitAsync();
 		}
 
-		//Business Kodlarının olacağı yer.
-	}
+        public async Task<IEnumerable<T>> GetAllAdminsAsync()
+        {
+            if (typeof(T) == typeof(Staff))
+            {
+                var staffRepository = _repository as IGenericRepository<Staff>;
+
+                if (staffRepository == null)
+                {
+                    throw new InvalidOperationException("The repository could not be cast to IGenericRepository<Staff>.");
+                }
+
+                return (IEnumerable<T>)await staffRepository.Where(s => s.isAdmin).ToListAsync();
+            }
+            else
+            {
+                throw new InvalidOperationException("GetAllAdminsAsync only supports Staff entities.");
+            }
+        }
+
+
+        //Business Kodlarının olacağı yer.
+    }
 }

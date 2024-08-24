@@ -7,10 +7,14 @@ using TripTrackerCore.Models;
 
 namespace TripTrackerCore.DTOs
 {
-	public class AdminDto : BaseDto
-	{
-		public string Name { get; set; }
-		public string Surname { get; set; }
-		//public virtual ICollection<Travel> ApprovedTravels { get; set; }
-	}
+    public class AdminDto : BaseDto
+    {
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public bool isAdmin { get; set; } = true;
+        public int? AdminId { get; set; }
+        //public List<StaffDto> Staffs { get; set; }
+        //public List<TravelDto> TravelAdmins { get; set; }
+        //public List<TravelDto> Travels { get; set; }
+    }
 }

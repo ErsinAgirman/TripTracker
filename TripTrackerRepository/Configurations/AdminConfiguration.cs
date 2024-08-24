@@ -9,12 +9,12 @@ using TripTrackerCore.Models;
 
 namespace TripTrackerRepository.Configurations
 {
-    internal class AdminConfiguration : IEntityTypeConfiguration<Admin>
+    internal class AdminConfiguration : IEntityTypeConfiguration<Staff>
 	{
-		public void Configure(EntityTypeBuilder<Admin> builder)
+		public void Configure(EntityTypeBuilder<Staff> builder)
 		{
-			builder.HasKey(x => x.Id);
-			builder.Property(x => x.Id).UseIdentityColumn();
+			//builder.HasKey(x => x.Id);
+			//builder.Property(x => x.Id).UseIdentityColumn();
 			builder.Property(x => x.Name).IsRequired().HasMaxLength(50);
 
 			//Digerleri de bu sekilde yapılabilir..
