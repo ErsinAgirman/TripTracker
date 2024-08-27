@@ -325,24 +325,23 @@ footer a {
 			<h1>Hesap Oluştur</h1>
 
 
-
 				<div class="form-group name-surname-container">
 					<div class="input-container">
 						<input type="text" placeholder="İsim" asp-for="Name" class="form-control" />
-						<span asp-validation-for="Name" class="text-danger"></span>
+						@* <span asp-validation-for="Name" class="text-danger"></span> *@
 					</div>
 
 					<div class="input-container">
 						<input type="text" placeholder="Soyisim" asp-for="Surname" class="form-control" />
-						<span asp-validation-for="Surname" class="text-danger"></span>
+						@* <span asp-validation-for="Surname" class="text-danger"></span> *@
 					</div>
 				</div>
 
 				<input type="text" placeholder="Kullanıcı Adı" asp-for="Username" />
-				<span asp-validation-for="Username" class="text-danger"></span>
+				@* <span asp-validation-for="Username" class="text-danger"></span> *@
 
 				<input type="email" placeholder="Email" asp-for="Mail" />
-				<span asp-validation-for="Mail" class="text-danger"></span>
+				@* <span asp-validation-for="Mail" class="text-danger"></span> *@
 				<br />
 				<div class="form-group">
 					<label for="inputAdminName" class="form-label"></label>
@@ -356,13 +355,13 @@ footer a {
 
 				<div class="form-group password-container">
 					<input type="password" id="password" placeholder="Şifre" asp-for="Password" class="form-control" />
-					<span asp-validation-for="Password" class="text-danger"></span>
+					@* <span asp-validation-for="Password" class="text-danger"></span> *@
 					<i class="toggle-password" onclick="togglePasswordVisibility('password', this)">👁️</i>
 				</div>
 
 				<div class="form-group password-container">
 					<input type="password" id="confirm-password" placeholder="Şifreyi Tekrar Giriniz" asp-for="ConfirmPassword" class="form-control" />
-					<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+					@* <span asp-validation-for="ConfirmPassword" class="text-danger"></span> *@
 					<i class="toggle-password" onclick="togglePasswordVisibility('confirm-password', this)">👁️</i>
 				</div>
 
@@ -393,7 +392,16 @@ footer a {
 		</div>
 	</div>
 </div>
-
+	<!-- Hata mesajlarını özel bir alan içinde göstereceğiz -->
+	@if (ViewData.ModelState.Values.Any(v => v.Errors.Any()))
+	{
+		<div class="alert alert-danger" role="alert">
+			@foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+			{
+				<p>@error.ErrorMessage</p>
+			}
+		</div>
+	}
 <footer>
         <p>
             <a target="_blank" href="https://www.opuqo.com/">Opuqo</a>

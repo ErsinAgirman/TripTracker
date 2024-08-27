@@ -11,10 +11,12 @@ namespace TripTrackerWeb.Controllers
     public class LoginController : Controller
     {
 		private readonly UserManager<Staff> _userManager;
+		private readonly SignInManager<Staff> _signInManager;
 
-		public LoginController(UserManager<Staff> userManager)
+		public LoginController(UserManager<Staff> userManager, SignInManager<Staff> signInManager)
 		{
 			_userManager = userManager;
+			_signInManager = signInManager;
 		}
 
 		[HttpGet]
@@ -32,6 +34,22 @@ namespace TripTrackerWeb.Controllers
 				return View(p);
 			}
 
+
+
+			// Şifreyi doğrula
+			List<string> passwordErrors;
+			bool isPasswordValid = PasswordValidator.ValidatePassword(p.Password, out passwordErrors);
+
+			if (!isPasswordValid)
+			{
+				foreach (var error in passwordErrors)
+				{
+					ModelState.AddModelError("", error);
+				}
+
+				return View(p);
+			}
+
 			Staff staff = new Staff()
 			{
 				Name = p.Name,
@@ -39,7 +57,7 @@ namespace TripTrackerWeb.Controllers
 				Email = p.Mail,
 				UserName = p.Username,
 				AdminId = p.AdminId,
-				isAdmin = true,
+				isAdmin = false,
 				Active = true
 			};
 

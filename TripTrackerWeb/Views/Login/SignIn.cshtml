@@ -392,7 +392,16 @@
 			</div>
 		</div>
 	</div>
-
+	<!-- Hata mesajlarını özel bir alan içinde göstereceğiz -->
+	@if (ViewData.ModelState.Values.Any(v => v.Errors.Any()))
+	{
+		<div class="alert alert-danger" role="alert">
+			@foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+			{
+				<p>@error.ErrorMessage</p>
+			}
+		</div>
+	}
 	<footer>
 		<p>
 			<a target="_blank" href="https://www.opuqo.com/">Opuqo</a>
