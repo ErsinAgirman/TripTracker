@@ -38,8 +38,8 @@ namespace TripTrackerWeb.Controllers
 				Surname = p.Surname,
 				Email = p.Mail,
 				UserName = p.Username,
-				AdminId = 53,
-				isAdmin = false,
+				AdminId = p.AdminId,
+				isAdmin = true,
 				Active = true
 			};
 
@@ -64,7 +64,7 @@ namespace TripTrackerWeb.Controllers
 
             return View(p);
 		}
-
+		
 		[HttpGet]
 		public IActionResult SignIn()
 		{

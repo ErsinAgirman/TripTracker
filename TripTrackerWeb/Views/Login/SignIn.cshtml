@@ -1,4 +1,6 @@
-﻿@{
+﻿@model TripTrackerCore.DTOs.UserRegisterDto
+
+@{
 	Layout = null;
 }
 
@@ -11,6 +13,29 @@
 
 	<style>
 		@@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+
+
+		.password-container {
+			position: relative;
+			display: flex;
+			align-items: center;
+		}
+
+			.password-container input {
+				width: 100%;
+				padding-right: 30px; /* Göz ikonu için sağda yer bırak */
+			}
+
+			.password-container .toggle-password {
+				position: absolute;
+				right: 10px;
+				cursor: pointer;
+			}
+
+
+
+
+
 
 		* {
 			box-sizing: border-box;
@@ -261,6 +286,29 @@
 				text-decoration: none;
 			}
 	</style>
+	<style>
+		.name-surname-container {
+			display: flex;
+			justify-content: space-between; /* Boşlukları iki input alanı arasında dağıt */
+			gap: 10px; /* İki input arasında boşluk bırak */
+		}
+
+			.name-surname-container input {
+				flex: 1; /* Eşit genişlikte olmalarını sağlar */
+			}
+
+		.form-select {
+			background-color: #eee;
+			width: 100%;
+			padding: 12px 15px;
+			font-size: 14px;
+			font-family: 'Montserrat', sans-serif;
+			border-radius: 5px;
+			border: 1px solid #ccc;
+			margin-bottom: 20px;
+			box-sizing: border-box;
+		}
+	</style>
 
 </head>
 <body>
@@ -272,12 +320,52 @@
 	<br>
 	<div class="container" id="container">
 		<div class="form-container sign-up-container">
-			<form action="#">
+			<form method="post" action="/Login/SignUp">
 				<h1>Hesap Oluştur</h1>
-				<input type="text" placeholder="İsim" />
-				<input type="email" placeholder="Email" />
-				<input type="password" placeholder="Şifre" />
-				<button>Kaydol</button>
+
+
+
+				<div class="form-group name-surname-container">
+					<div class="input-container">
+						<input type="text" placeholder="İsim" asp-for="Name" class="form-control" />
+						<span asp-validation-for="Name" class="text-danger"></span>
+					</div>
+
+					<div class="input-container">
+						<input type="text" placeholder="Soyisim" asp-for="Surname" class="form-control" />
+						<span asp-validation-for="Surname" class="text-danger"></span>
+					</div>
+				</div>
+
+				<input type="text" placeholder="Kullanıcı Adı" asp-for="Username" />
+				<span asp-validation-for="Username" class="text-danger"></span>
+
+				<input type="email" placeholder="Email" asp-for="Mail" />
+				<span asp-validation-for="Mail" class="text-danger"></span>
+				<br />
+				<div class="form-group">
+					<label for="inputAdminName" class="form-label"></label>
+					<select class="form-select" id="inputAdminName">
+						<option value="">Bir yönetici seçin</option>
+						<!-- API'den alınan admin isimleri burada listelenecek -->
+					</select>
+					<!-- Seçilen AdminId'yi tutacak gizli input -->
+					<input type="hidden" id="inputAdminId" name="AdminId">
+				</div>
+
+				<div class="form-group password-container">
+					<input type="password" id="password" placeholder="Şifre" asp-for="Password" class="form-control" />
+					<span asp-validation-for="Password" class="text-danger"></span>
+					<i class="toggle-password" onclick="togglePasswordVisibility('password', this)">👁️</i>
+				</div>
+
+				<div class="form-group password-container">
+					<input type="password" id="confirm-password" placeholder="Şifreyi Tekrar Giriniz" asp-for="ConfirmPassword" class="form-control" />
+					<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+					<i class="toggle-password" onclick="togglePasswordVisibility('confirm-password', this)">👁️</i>
+				</div>
+
+				<button type="submit">Kaydol</button>
 			</form>
 		</div>
 		<div class="form-container sign-in-container">
@@ -286,7 +374,7 @@
 				<input type="email" placeholder="Email" />
 				<input type="password" placeholder="Şifre" />
 				<a href="#">Şifremi Unuttum?</a>
-				<button>Giriş yap</button>
+				<button type="submit">Giriş yap</button>
 			</form>
 		</div>
 		<div class="overlay-container">
@@ -307,10 +395,11 @@
 
 	<footer>
 		<p>
-			Created with <i class="fa fa-heart"></i> by
-			<a target="_blank" href="https://florin-pop.com">Opuqo</a>
-			???
-			<a target="_blank" href="link eklenecek">here</a>.
+			<a target="_blank" href="https://www.opuqo.com/">Opuqo</a>
+			tarafından <i class="fa fa-heart"></i> oluşturuldu
+
+			Bilgi için ulaşın
+
 		</p>
 	</footer>
 
@@ -318,6 +407,12 @@
 		const signUpButton = document.getElementById('signUp');
 		const signInButton = document.getElementById('signIn');
 		const container = document.getElementById('container');
+
+		// // Sayfa yüklendiğinde sağ paneli aktif hale getir
+		// window.onload = () => {
+		// 	container.classList.add("right-panel-active");
+		// };
+
 		signUpButton.addEventListener('click', () => {
 			container.classList.add("right-panel-active");
 		});
@@ -327,6 +422,57 @@
 		});
 	</script>
 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="~/mico-html/js/bootstrap.js"></script>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+	<script>
+		function togglePasswordVisibility(passwordFieldId, icon) {
+			var passwordField = document.getElementById(passwordFieldId);
+			if (passwordField.type === "password") {
+				passwordField.type = "text";
+				icon.textContent = "🙈";
+			} else {
+				passwordField.type = "password";
+				icon.textContent = "👁️";
+			}
+		}
+
+		$(document).ready(function () {
+			// Admin verilerini API'den çekme
+			$.ajax({
+				url: "https://localhost:7294/api/Admin", // API URL
+				method: "GET",
+				success: function (data) {
+					var dropdown = $("#inputAdminName");
+					dropdown.empty(); // Dropdown'u temizle
+					dropdown.append('<option value="">Bir yönetici seçin</option>'); // Varsayılan seçenek
+
+					// API'den dönen verileri dropdown'a ekle
+					$.each(data.data, function (index, admin) {
+						dropdown.append('<option value="' + admin.id + '">' + admin.name + ' ' + admin.surname + '</option>');
+					});
+				},
+				error: function (err) {
+					console.log("Admin verileri alınırken hata oluştu: " + err.statusText);
+				}
+			});
+
+			// Kullanıcı bir admin seçtiğinde, seçilen admin ID'sini gizli input alanına yerleştirme
+			$("#inputAdminName").change(function () {
+				var selectedAdminId = $(this).val();
+				$("#inputAdminId").val(selectedAdminId);
+			});
+		});
+
+
+
+
+
+
+	</script>
 
 </body>
 </html>
