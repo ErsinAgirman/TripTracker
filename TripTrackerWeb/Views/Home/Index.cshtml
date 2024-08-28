@@ -1,166 +1,140 @@
-﻿@{
+﻿@model TripTrackerCore.DTOs.UIDtos.UserProfileDto
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head><title></title>
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
-    <h2>Hello World</h2>
+</head>
+    <body>
+	<div class="container-fluid">
+		@* <br /><br /> *@
+		<h4 class="page-title">Profilim</h4>
+		<div class="row">
+			<div class="col-md-3">
+				<div class="card card-stats card-warning">
+					<div class="card-body ">
+						<div class="row">
+							<div class="col-5">
+								<div class="icon-big text-center">
+									<i class="la la-users"></i>
+								</div>
+							</div>
+							<div class="col-7 d-flex align-items-center">
+								<div class="numbers">
+									<p class="card-category">Çalışan Adı</p>
+									<h4 class="card-title">@Model.FirstName</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="card card-stats card-warning">
+					<div class="card-body ">
+						<div class="row">
+							<div class="col-5">
+								<div class="icon-big text-center">
+									<i class="la la-bar-chart"></i>
+								</div>
+							</div>
+							<div class="col-7 d-flex align-items-center">
+								<div class="numbers">
+									<p class="card-category">Çalışan Soyadı</p>
+									<h4 class="card-title">@Model.LastName</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="card card-stats card-success">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-5">
+								<div class="icon-big text-center">
+									<i class="la la-newspaper-o"></i>
+								</div>
+							</div>
+							<div class="col-7 d-flex align-items-center">
+								<div class="numbers">
+									<p class="card-category">Kaydolma Tarihi</p>
+									<h4 class="card-title">@Model.RegistrationDate.ToShortDateString()</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="card card-stats card-success">
+					<div class="card-body ">
+						<div class="row">
+							<div class="col-5">
+								<div class="icon-big text-center">
+									<i class="la la-check-circle"></i>
+								</div>
+							</div>
+							<div class="col-7 d-flex align-items-center">
+								<div class="numbers">
+									<p class="card-category">Email</p>
+									<h4 class="card-title">@Model.Email</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="card card-stats card-primary">
+					<div class="card-body ">
+						<div class="row">
+							<div class="col-5">
+								<div class="icon-big text-center">
+									<i class="la la-check-circle"></i>
+								</div>
+							</div>
+							<div class="col-7 d-flex align-items-center">
+								<div class="numbers">
+									<p class="card-category">Yöneticisinin Adı</p>
+									<h4 class="card-title">@Model.AdminFirstName</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div><div class="col-md-3">
+				<div class="card card-stats card-primary">
+					<div class="card-body ">
+						<div class="row">
+							<div class="col-5">
+								<div class="icon-big text-center">
+									<i class="la la-check-circle"></i>
+								</div>
+							</div>
+							<div class="col-7 d-flex align-items-center">
+								<div class="numbers">
+									<p class="card-category">Yöneticisinin Soyadı</p>
+									<h4 class="card-title">@Model.AdminLastName</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+			</div>
 
-    <div id="result"></div> <!-- API'den gelen veriyi göstermek için bu div kullanılır -->
-   @*   <button id="getDataButton" class="btn btn-primary">Get Data</button>  *@
-    <button id="getTravelButton" class="btn btn-primary">Get Travel Data</button>
-    <button id="getStaffButton" class="btn btn-primary">Get Staff Data</button>
-    <button id="getStatusButton" class="btn btn-primary">Get Status Data</button>
-    <button id="getAdminsButton" class="btn btn-primary">Get Admin Data</button>
-    <button id="getTWSButton" class="btn btn-primary">Get TWS Data</button>
+
+		</div>
     
-    <!-- Veri Gösterim Alanları -->
-    <div id="adminResult"></div>
-    <div id="travelResult"></div>
-    <div id="staffResult"></div>
-    <div id="statusResult"></div>
-    <div id="travelWithStaffResult"></div>
+	</body>
+</html>
 
-</div>
-
-   
-<!-- API'den gelen veriyi tablo olarak göstermek için bu tablo yapısı kullanılır -->
-
-</div>
-
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        // Admin verisini çekme ve gösterme
-        $("#getAdminsButton").click(function () {
-            $.ajax({
-                url: "https://localhost:7294/api/Admin",
-                method: "GET",
-                success: function (data) {
-                    var adminTable = "<table class='table table-bordered'><thead><tr><th>ID</th><th>Name</th><th>Surname</th></tr></thead><tbody>";
-                    $.each(data.data, function (index, item) {
-                        adminTable += "<tr><td>" + item.id + "</td><td>" + item.name + "</td><td>" + item.surname + "</td></tr>";
-                    });
-                    adminTable += "</tbody></table>";
-                    $("#adminResult").html(adminTable);
-                },
-                error: function (err) {
-                    console.log(err);
-                    $("#adminResult").html("An error occurred: " + err.statusText);
-                }
-            });
-        });
-
-        // Travel verisini çekme ve gösterme
-        $("#getTravelButton").click(function () {
-            $.ajax({
-                url: "https://localhost:7294/api/Travel",
-                method: "GET",
-                success: function (data) {
-                    var travelTable = "<table class='table table-bordered'><thead><tr><th>ID</th><th>City</th><th>Description</th><th>Stay</th></tr></thead><tbody>";
-                    $.each(data.data, function (index, item) {
-                        travelTable += "<tr><td>" + item.id 
-                        + "</td><td>" 
-                        + item.city 
-                        + "</td><td>" 
-                        + item.description 
-                        + "</td><td>" 
-                        + item.stay 
-                        + "</td></tr>";
-                    });
-                    travelTable += "</tbody></table>";
-                    $("#travelResult").html(travelTable);
-                },
-                error: function (err) {
-                    console.log(err);
-                    $("#travelResult").html("An error occurred: " + err.statusText);
-                }
-            });
-        });
-
-        // Staff verisini çekme ve gösterme
-        $("#getStaffButton").click(function () {
-            $.ajax({
-                url: "https://localhost:7294/api/Staff",
-                method: "GET",
-                success: function (data) {
-                    var staffTable = "<table class='table table-bordered'><thead><tr><th>ID</th><th>Name</th><th>Surname</th></tr></thead><tbody>";
-                    $.each(data.data, function (index, item) {
-                        staffTable += "<tr><td>" + item.id + "</td><td>" + item.name + "</td><td>" + item.surname + "</td></tr>";
-                    });
-                    staffTable += "</tbody></table>";
-                    $("#staffResult").html(staffTable);
-                },
-                error: function (err) {
-                    console.log(err);
-                    $("#staffResult").html("An error occurred: " + err.statusText);
-                }
-            });
-        });
-
-        // Status verisini çekme ve gösterme
-        $("#getStatusButton").click(function () {
-            $.ajax({
-                url: "https://localhost:7294/api/Status",
-                method: "GET",
-                success: function (data) {
-                    var statusTable = "<table class='table table-bordered'><thead><tr><th>ID</th><th>Status</th></tr></thead><tbody>";
-                    $.each(data.data, function (index, item) {
-                        statusTable += "<tr><td>" + item.id + "</td><td>" + item.information + "</td></tr>";
-                    });
-                    statusTable += "</tbody></table>";
-                    $("#statusResult").html(statusTable);
-                },
-                error: function (err) {
-                    console.log(err);
-                    $("#statusResult").html("An error occurred: " + err.statusText);
-                }
-            });
-        });
-    });
-
-
-    $(document).ready(function () {
-        // TWS verisini çekme ve gösterme
-        $("#getTWSButton").click(function () {
-            $.ajax({
-                url: "https://localhost:7294/api/Travel/GetTravelWithStaff",
-                method: "GET",
-                success: function (data) {
-                    var twsTable = "<table class='table table-bordered'><thead><tr><th>Travel ID</th><th>City</th><th>Description</th><th>Stay</th><th>Vehicle</th><th>Staff Name</th><th>Staff Surname</th><th>Admin Name</th><th>Admin Surname</th></tr></thead><tbody>";
-                    var requests = [];
-
-                    $.each(data.data, function (index, item) {
-                        var request = $.ajax({
-                            url: "https://localhost:7294/api/Admin/" + item.adminId,
-                            method: "GET",
-                            success: function (adminData) {
-                                twsTable += "<tr><td>" + item.id + "</td><td>" + item.city + "</td><td>" + item.description + "</td><td>" + item.stay + "</td><td>" + item.vehicle + "</td><td>" + item.staff.name + "</td><td>" + item.staff.surname + "</td><td>" + adminData.data.name + "</td><td>" + adminData.data.surname + "</td></tr>";
-                            },
-                            error: function (err) {
-                                console.log(err);
-                                $("#travelWithStaffResult").html("An error occurred while fetching admin data: " + err.statusText);
-                            }
-                        });
-                        requests.push(request);
-                    });
-
-                    $.when.apply($, requests).then(function () {
-                        twsTable += "</tbody></table>";
-                        $("#travelWithStaffResult").html(twsTable);
-                    });
-                },
-                error: function (err) {
-                    console.log(err);
-                    $("#travelWithStaffResult").html("An error occurred: " + err.statusText);
-                }
-            });
-        });
-    });
-
-
-
-</script>

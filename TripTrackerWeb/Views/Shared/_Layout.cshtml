@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model TripTrackerCore.DTOs.UIDtos.UserProfileDto
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -14,7 +16,16 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
 	<link rel="stylesheet" href="~/Ready-Bootstrap-Dashboard-master/assets/css/ready.css">
 	<link rel="stylesheet" href="~/Ready-Bootstrap-Dashboard-master/assets/css/demo.css">
+	<style>
+		/* İçerik ve layout arasındaki boşlukları kontrol edin */
+		.layout {
+			padding: 20px; /* Layoutun içinde içerik için yeterli alan bırakır */
+		}
 
+		.content {
+			margin-top: 20px; /* İçerikle layout arasındaki boşluk */
+		}
+	</style>
 </head>
 <body>
     @* <header>
@@ -105,7 +116,7 @@
 										</a>
 										<a href="#">
 											<div class="notif-img">
-												<img src="~/Ready-Bootstrap-Dashboard-master/assets/img/profile2.jpg" alt="Img Profile">
+												<img src="~/css/personel.png" alt="Img Profile">
 											</div>
 											<div class="notif-content">
 												<span class="block">
@@ -131,14 +142,14 @@
 							</ul>
 						</li>
 						<li class="nav-item dropdown">
-							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="~/Ready-Bootstrap-Dashboard-master/assets/img/profile.jpg" alt="user-img" width="36" class="img-circle"><span>Kullanıcı Adı</span></span> </a>
+							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="~/css/personel.png" alt="user-img" width="36" class="img-circle"><span>@User.Identity.Name</span></span> </a>
 							<ul class="dropdown-menu dropdown-user">
 								<li>
 									<div class="user-box">
-										<div class="u-img"><img src="~/Ready-Bootstrap-Dashboard-master/assets/img/profile.jpg" alt="user"></div>
+										<div class="u-img"><img src="~/css/personel.png" alt="user"></div>
 										<div class="u-text">
-											<h4>Kullanıcı Adı</h4>
-											<p class="text-muted">hello@themekita.com</p><a href="profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a>
+											<h4>@User.Identity.Name</h4>
+											@* <p class="text-muted">hello@themekita.com</p><a href="profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a> *@
 										</div>
 									</div>
 								</li>
@@ -161,12 +172,12 @@
 			<div class="scrollbar-inner sidebar-wrapper">
 				<div class="user">
 					<div class="photo">
-						<img src="~/Ready-Bootstrap-Dashboard-master/assets/img/profile.jpg">
+						<img src="~/css/personel.png">
 					</div>
 					<div class="info">
 						<a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
 							<span>
-								Kullanıcı Adı
+								@User.Identity.Name
 								<span class="user-level">Yönetici/Çalışan</span>
 								<span class="caret"></span>
 							</span>
@@ -198,7 +209,7 @@
 					<li class="nav-item active">
 						<a href="~/Ready-Bootstrap-Dashboard-master/index.html">
 							<i class="la la-dashboard"></i>
-							<p>Ana Panel</p>
+							<p>Profilim</p>
 							@* <span class="badge badge-count">5</span> *@
 						</a>
 					</li>
@@ -227,8 +238,8 @@
 						<a href="notifications.html">
 							<i class="la la-bell"></i>
 							<p>Bildirimler</p>
-							 <span class="badge badge-success">3</span> 
-						</a>
+                            <span class="badge badge-success">3</span>
+                        </a>
 					</li>
 					<li class="nav-item">
 						<a href="typography.html">
@@ -243,12 +254,14 @@
 							<p>Sistem Ayarları</p>
 						</a>
 					</li>
-					@* <li class="nav-item update-pro">
-						<button data-toggle="modal" data-target="#modalUpdate">
+					<li class="nav-item update-pro">
+						<form asp-action="SignOut" asp-controller="Login" method="post">
+						<button data-toggle="modal" onclick="redirectToHome()" data-target="#modalUpdate"> 
 							<i class="la la-hand-pointer-o"></i>
-							<p>Update To Pro</p>
+							<p>Çıkış Yap</p>
 						</button>
-					</li> *@
+						</form>
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -256,10 +269,10 @@
 
 
 
-		<div class="container">
-			<main role="main" class="pb-3">
+		<div class="main-panel">
+			<div class="content">
 				@RenderBody()
-			</main>
+			</div>
 		</div>
 
 		@* <footer class="border-top footer text-muted">
@@ -276,12 +289,12 @@
 
 
 
-
-
-
-
 </body>
-
+<script>
+	function redirectToHome() {
+		window.location.href = '@Url.Action("SignIn", "Login")';
+	}
+</script>
 
 <script src="~/Ready-Bootstrap-Dashboard-master/assets/js/core/jquery.3.2.1.min.js"></script>
 <script src="~/Ready-Bootstrap-Dashboard-master/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>

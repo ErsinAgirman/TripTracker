@@ -1,22 +1,45 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using TripTrackerCore.DTOs;
+using TripTrackerCore.DTOs.UIDtos;
+using TripTrackerCore.Models;
 using TripTrackerWeb.Models;
 
 namespace TripTrackerWeb.Controllers
 {
+	[Authorize]
 	public class HomeController : Controller
 	{
+		private readonly UserManager<Staff> _userManager;
 		private readonly ILogger<HomeController> _logger;
 
-		public HomeController(ILogger<HomeController> logger)
+		public HomeController(ILogger<HomeController> logger, UserManager<Staff> userManager)
 		{
 			_logger = logger;
+			_userManager = userManager;
 		}
-
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
-			return View();
+			var user = await _userManager.GetUserAsync(User);
+			if (user == null)
+			{
+				return NotFound("Kullanıcı bulunamadı.");
+			}
+
+
+			var userProfile = new UserProfileDto
+			{
+				FirstName = user.Name,
+				LastName = user.Surname,
+				Email = user.Email,
+				RegistrationDate = user.CreatedDate,
+				AdminFirstName = user.Admin?.Name,
+				AdminLastName = user.Admin?.Surname
+			};
+
+			return View(userProfile);
 		}
 
 		public IActionResult Privacy()

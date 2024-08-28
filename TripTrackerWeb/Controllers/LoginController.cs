@@ -7,9 +7,9 @@ using TripTrackerWeb.Models;
 
 namespace TripTrackerWeb.Controllers
 {
-    [AllowAnonymous]
-    public class LoginController : Controller
-    {
+	[AllowAnonymous]
+	public class LoginController : Controller
+	{
 		private readonly UserManager<Staff> _userManager;
 		private readonly SignInManager<Staff> _signInManager;
 
@@ -20,10 +20,10 @@ namespace TripTrackerWeb.Controllers
 		}
 
 		[HttpGet]
-        public IActionResult SignUp()
-        {
-            return View();
-        }
+		public IActionResult SignUp()
+		{
+			return View();
+		}
 
 		[HttpPost]
 		public async Task<IActionResult> SignUp(UserRegisterDto p)
@@ -62,8 +62,8 @@ namespace TripTrackerWeb.Controllers
 			};
 
 			if (p.Password == p.ConfirmPassword)
-            {
-                var result = await _userManager.CreateAsync(staff, p.Password);
+			{
+				var result = await _userManager.CreateAsync(staff, p.Password);
 
 				if (result.Succeeded)
 				{
@@ -72,25 +72,49 @@ namespace TripTrackerWeb.Controllers
 					return RedirectToAction("SignIn");
 				}
 				else
-                {
-                    foreach(var item in result.Errors)
+				{
+					foreach (var item in result.Errors)
 					{
 						ModelState.AddModelError("", item.Description);
 					}
-                }
-            }
+				}
+			}
 
-            return View(p);
+			return View(p);
 		}
-		
+
 		[HttpGet]
 		public IActionResult SignIn()
 		{
 			return View();
 		}
 
+		[HttpPost]
 
+		public async Task <IActionResult> SignIn(UserSignInDto p)
+		{
+            if (ModelState.IsValid)
+            {
+				var results = await _signInManager.PasswordSignInAsync(p.SignInUsername, p.SignInPassword, false, false);
+                if (results.Succeeded)
+                {
+					return RedirectToAction("Index", "Default");
+                }
+                else
+                {
+					return RedirectToAction("SignIn");
+                }
+            }
+			return View(p);
+        }
 
+		[HttpPost]
+		[ValidateAntiForgeryToken] // CSRF saldırılarına karşı koruma sağlar
+		public async Task<IActionResult> SignOut()
+		{
+			await _signInManager.SignOutAsync();
+			return RedirectToAction("SignIn", "Login");
+		}
 
 	}
 }

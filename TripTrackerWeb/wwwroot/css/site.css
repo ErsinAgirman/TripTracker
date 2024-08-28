@@ -1,18 +1,25 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-  margin-bottom: 60px;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+    margin: 0 auto;
+}
+
+.layout {
+    padding: 30px;
+    /* Diðer stil kurallarý */
+}
+
+.content {
+    margin-top: 30px;
+    /* Diðer stil kurallarý */
 }

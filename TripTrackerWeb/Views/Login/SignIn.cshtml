@@ -1,5 +1,4 @@
-﻿@model TripTrackerCore.DTOs.UserRegisterDto
-
+﻿@model TripTrackerCore.DTOs.UserSignInDto
 @{
 	Layout = null;
 }
@@ -13,6 +12,14 @@
 
 	<style>
 		@@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+		/* Personel Seyahat Sistemi başlığının stili */
+h1 {
+    font-size: 2vw; /* Ekran boyutuna göre dinamik font boyutu */
+    color: #04612c;
+    margin: 0;
+    text-align: center; /* Metni ortalamak için */
+}
+
 
 
 		.password-container {
@@ -287,12 +294,6 @@
 			}
 	</style>
 	<style>
-		.name-surname-container {
-			display: flex;
-			justify-content: space-between; /* Boşlukları iki input alanı arasında dağıt */
-			gap: 10px; /* İki input arasında boşluk bırak */
-		}
-
 			.name-surname-container input {
 				flex: 1; /* Eşit genişlikte olmalarını sağlar */
 			}
@@ -316,63 +317,19 @@
 
 	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwgcERR63sgRYQxBd89ijLspmKLikH4Gbgjg&s" alt="OpuqoImage" style="width: auto;">
 
-	<h1 style="font-size: 80; color:#04612c;">Personel Seyahat Sistemi</h1>
+	<h1 style="color:#04612c;">Personel Seyahat Sistemi</h1>
 	<br>
 	<div class="container" id="container">
 		<div class="form-container sign-up-container">
-			<form method="post" action="/Login/SignUp">
-				<h1>Hesap Oluştur</h1>
-
-
-
-				<div class="form-group name-surname-container">
-					<div class="input-container">
-						<input type="text" placeholder="İsim" asp-for="Name" class="form-control" />
-						<span asp-validation-for="Name" class="text-danger"></span>
-					</div>
-
-					<div class="input-container">
-						<input type="text" placeholder="Soyisim" asp-for="Surname" class="form-control" />
-						<span asp-validation-for="Surname" class="text-danger"></span>
-					</div>
-				</div>
-
-				<input type="text" placeholder="Kullanıcı Adı" asp-for="Username" />
-				<span asp-validation-for="Username" class="text-danger"></span>
-
-				<input type="email" placeholder="Email" asp-for="Mail" />
-				<span asp-validation-for="Mail" class="text-danger"></span>
-				<br />
-				<div class="form-group">
-					<label for="inputAdminName" class="form-label"></label>
-					<select class="form-select" id="inputAdminName">
-						<option value="">Bir yönetici seçin</option>
-						<!-- API'den alınan admin isimleri burada listelenecek -->
-					</select>
-					<!-- Seçilen AdminId'yi tutacak gizli input -->
-					<input type="hidden" id="inputAdminId" name="AdminId">
-				</div>
-
-				<div class="form-group password-container">
-					<input type="password" id="password" placeholder="Şifre" asp-for="Password" class="form-control" />
-					<span asp-validation-for="Password" class="text-danger"></span>
-					<i class="toggle-password" onclick="togglePasswordVisibility('password', this)">👁️</i>
-				</div>
-
-				<div class="form-group password-container">
-					<input type="password" id="confirm-password" placeholder="Şifreyi Tekrar Giriniz" asp-for="ConfirmPassword" class="form-control" />
-					<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-					<i class="toggle-password" onclick="togglePasswordVisibility('confirm-password', this)">👁️</i>
-				</div>
-
+			<form method="post" asp-action="/Login/SignUp">
 				<button type="submit">Kaydol</button>
 			</form>
 		</div>
 		<div class="form-container sign-in-container">
-			<form action="#">
+			<form method="post">
 				<h1>Giriş Yap</h1>
-				<input type="email" placeholder="Email" />
-				<input type="password" placeholder="Şifre" />
+				<input type="text" placeholder="Kullanıcı Adı" asp-for="SignInUsername" />
+				<input type="password" placeholder="Şifre" asp-for="SignInPassword"/>
 				<a href="#">Şifremi Unuttum?</a>
 				<button type="submit">Giriş yap</button>
 			</form>
@@ -387,7 +344,8 @@
 				<div class="overlay-panel overlay-right">
 					<h1>Selam, Ekip!</h1>
 					<p>Seyahat etmek için kişisel bilgilerini gir.</p>
-					<button class="ghost" id="signUp">Kaydol</button>
+
+					<button class="ghost" type="button" onclick="redirectToSignUp()">Kaydol</button>
 				</div>
 			</div>
 		</div>
@@ -416,19 +374,6 @@
 		const signUpButton = document.getElementById('signUp');
 		const signInButton = document.getElementById('signIn');
 		const container = document.getElementById('container');
-
-		// // Sayfa yüklendiğinde sağ paneli aktif hale getir
-		// window.onload = () => {
-		// 	container.classList.add("right-panel-active");
-		// };
-
-		signUpButton.addEventListener('click', () => {
-			container.classList.add("right-panel-active");
-		});
-
-		signInButton.addEventListener('click', () => {
-			container.classList.remove("right-panel-active");
-		});
 	</script>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -448,39 +393,11 @@
 				icon.textContent = "👁️";
 			}
 		}
-
-		$(document).ready(function () {
-			// Admin verilerini API'den çekme
-			$.ajax({
-				url: "https://localhost:7294/api/Admin", // API URL
-				method: "GET",
-				success: function (data) {
-					var dropdown = $("#inputAdminName");
-					dropdown.empty(); // Dropdown'u temizle
-					dropdown.append('<option value="">Bir yönetici seçin</option>'); // Varsayılan seçenek
-
-					// API'den dönen verileri dropdown'a ekle
-					$.each(data.data, function (index, admin) {
-						dropdown.append('<option value="' + admin.id + '">' + admin.name + ' ' + admin.surname + '</option>');
-					});
-				},
-				error: function (err) {
-					console.log("Admin verileri alınırken hata oluştu: " + err.statusText);
-				}
-			});
-
-			// Kullanıcı bir admin seçtiğinde, seçilen admin ID'sini gizli input alanına yerleştirme
-			$("#inputAdminName").change(function () {
-				var selectedAdminId = $(this).val();
-				$("#inputAdminId").val(selectedAdminId);
-			});
-		});
-
-
-
-
-
-
+	</script>
+	<script>
+		function redirectToSignUp() {
+			window.location.href = '@Url.Action("SignUp", "Login")';
+		}
 	</script>
 
 </body>

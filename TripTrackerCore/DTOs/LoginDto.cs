@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace TripTrackerCore.DTOs
 {
-	public class UserSignInDto
+	public class LoginDto
 	{
-		public string SignInUsername { get; set; }
-		public string SignInPassword { get; set; }
-	}
+        public UserRegisterDto registerDto { get; set; }
+        public UserSignInDto signInDto { get; set; }
+    }
 }
