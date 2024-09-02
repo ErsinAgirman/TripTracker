@@ -2,12 +2,18 @@
 
 namespace TripTrackerWeb.Controllers
 {
+
     public class TravelController : Controller
     {
         public IActionResult Index()
         {      
             return View();
         }
+        public IActionResult ListTravels()
+        {
+            return View();
+        }
+
 
         public IActionResult CreateTravel()
         {
@@ -23,5 +29,6 @@ namespace TripTrackerWeb.Controllers
         {
             return View();
         }
+
     }
 }

@@ -1,0 +1,93 @@
+﻿@using System.Security.Claims
+@{
+    ViewData["Title"] = "List Travels";
+}
+
+<h2>Seyahatlerim</h2>
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Seyahatlerim</div>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover" id="travelTable">
+                <thead>
+                    <tr>
+                        <th scope="col">Seyahat PNR </th>
+                        <th scope="col">Şehir</th>
+                        <th scope="col">Açıklama</th>
+                        <th scope="col">Kalacak Yer</th>
+                        <th scope="col">Başlangıç Tarihi</th>
+                        <th scope="col">Bitiş Tarihi</th>
+                        <th scope="col">Durum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Seyahat verileri buraya eklenecek -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="travelResult"></div>
+
+@section Scripts {
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var loggedInStaffId = '@User.FindFirstValue(ClaimTypes.NameIdentifier)'; // Giriş yapan kullanıcının Staff ID'sini al
+
+            // Önce statü verilerini al
+            $.ajax({
+                url: "https://localhost:7294/api/Status",
+                method: "GET",
+                success: function (statusData) {
+                    var statusMap = {};
+
+                    // Statusleri ID ile eşleştir
+                    $.each(statusData.data, function (index, status) {
+                        statusMap[status.id] = status.information;
+                    });
+
+                    // Şimdi seyahat verilerini al
+                    $.ajax({
+                        url: "https://localhost:7294/api/Travel/GetTravelWithStaff",
+                        method: "GET",
+                        success: function (data) {
+                            var tableBody = $('#travelTable tbody');
+                            tableBody.empty(); // Önce eski veriyi temizle
+
+                            // Gelen veriler üzerinde döngü yaparak, giriş yapan kullanıcının Staff ID'sine sahip olanları filtrele
+                            $.each(data.data, function (index, item) {
+                                if (item.staff && item.staff.id == loggedInStaffId) {
+                                    var statusInfo = statusMap[item.statusId] || "Unknown"; // Statü ID'yi kullanarak bilgiyi al
+                                    var row = '<tr>' +
+                                        '<td>' + item.id + '</td>' +
+                                        '<td>' + item.city + '</td>' +
+                                        '<td>' + item.description + '</td>' +
+                                        '<td>' + item.stay + '</td>' +
+                                        '<td>' + new Date(item.startDate).toLocaleDateString() + '</td>' + // Başlangıç tarihi
+                                        '<td>' + new Date(item.endDate).toLocaleDateString() + '</td>' + // Bitiş tarihi
+                                        '<td>' + statusInfo + '</td>' + // Status sütununu ekleyin
+                                        '</tr>';
+                                    tableBody.append(row);
+                                }
+                            });
+                        },
+                        error: function (err) {
+                            console.log(err);
+                            var errorMessage = "<tr><td colspan='7'>Bir hata oluştu: " + err.statusText + "</td></tr>";
+                            $('#travelTable tbody').html(errorMessage);
+                        }
+                    });
+                },
+                error: function (err) {
+                    console.log(err);
+                    var errorMessage = "<tr><td colspan='7'>Statü verileri yüklenemedi: " + err.statusText + "</td></tr>";
+                    $('#travelTable tbody').html(errorMessage);
+                }
+            });
+        });
+    </script>
+}

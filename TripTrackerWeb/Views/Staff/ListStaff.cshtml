@@ -1,0 +1,76 @@
+﻿@using System.Security.Claims
+@{
+    ViewData["Title"] = "Bana Bağlı Çalışanlar";
+    var loggedInAdminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
+
+
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Çalışan Tablom</div>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover" id="staffTable">
+                <thead>
+                    <tr>
+                        <th scope="col">Çalışan Numarası</th>
+                        <th scope="col">Ad</th>
+                        <th scope="col">Soyad</th>
+                        <th scope="col">Yönetici Adı</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Staff verileri buraya eklenecek -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var loggedInAdminId = '@loggedInAdminId'; // Razor'dan gelen değer
+
+            $.ajax({
+                url: "https://localhost:7294/api/Staff",
+                method: "GET",
+                success: function (response) {
+                    console.log("API Yanıtı:", response); // Yanıtı kontrol etmek için
+                    var staffTableBody = $('#staffTable tbody');
+                    staffTableBody.empty();
+
+                    // Önce tüm adminler için bir eşleme oluştur
+                    var adminMap = {};
+
+                    $.each(response.data, function (index, staff) {
+                        if (staff.isAdmin) {
+                            adminMap[staff.id] = staff.name + ' ' + staff.surname;
+                        }
+                    });
+
+                    // Giriş yapan adminin ID'sine sahip olanları filtrele
+                    $.each(response.data, function (index, staff) {
+                        if (staff.adminId == loggedInAdminId) {
+                            var adminName = adminMap[staff.adminId] || 'Yok'; // Admin adı ve soyadı
+
+                            var row = '<tr>' +
+                                '<td>' + staff.id + '</td>' +
+                                '<td>' + staff.name + '</td>' +
+                                '<td>' + staff.surname + '</td>' +
+                                '<td>' + adminName + '</td>' +
+                                '</tr>';
+                            staffTableBody.append(row);
+                        }
+                    });
+                },
+                error: function (err) {
+                    console.log("AJAX Hatası:", err); // Hata mesajını kontrol etmek için
+                    $("#staffTable").html("Bir hata oluştu: " + err.statusText);
+                }
+            });
+        });
+    </script>
+}

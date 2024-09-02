@@ -8,6 +8,10 @@ namespace TripTrackerWeb.Controllers
         {
             return View();
         }
+        public IActionResult ListStaff()
+        {
+            return View();
+        }
 
         public IActionResult CreateStaff()
         {
